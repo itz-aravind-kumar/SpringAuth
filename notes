@@ -1,0 +1,32 @@
+Step 1 Create a project with spring initializer with all the dependencies
+Step 2 Configure the database in application properties
+
+    spring.datasource.url=jdbc:mysql://localhost:3306/mydb1
+    spring.datasource.username=root
+    spring.datasource.password=Potter5595
+    spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+    spring.jpa.show-sql=true
+
+Step 3 Make sure the db specified in url exists..If not create it
+Step 4 run the command ''''mvn clean install''''
+Step 5 run the command '''' mvn spring-boot:run ''''
+Step 6 To use mysql use the command '''' mysql -u root -p ''''
+
+-- CREATE TABLE users (
+--     id CHAR(36) PRIMARY KEY,           -- UUID as string, e.g. "fa249f1f-...."
+--     email VARCHAR(100) UNIQUE NOT NULL, -- Used for login/identity
+--     password VARCHAR(255) NOT NULL,     -- BCrypt hash, so up to 255 chars
+--     role VARCHAR(20) NOT NULL DEFAULT 'USER', -- e.g. USER, ADMIN
+--     username VARCHAR(100),                  -- Optional: user's name
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+-- );
+-- CREATE TABLE tasks (
+--     id CHAR(36) PRIMARY KEY,                -- UUID PK
+--     title VARCHAR(255) NOT NULL,            -- Task title
+--     description TEXT,                       -- Task details
+--     owner_id CHAR(36) NOT NULL,             -- FK to users(id)
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--     FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+-- );
