@@ -16,7 +16,7 @@ public class JwtService {
     private String secret;
     private Key key;
 
-    private static final long EXPIRATION_MS = 5 * 60 * 60 * 1000; // 5 hours
+    private static final long EXPIRATION_MS = 5 * 60 * 60 * 100; // 5 hours
 
     @PostConstruct
     public void init() {
