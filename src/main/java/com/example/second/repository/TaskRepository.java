@@ -26,7 +26,7 @@ public class TaskRepository {
 
     // READ: Get by task ID
     public TaskDetails findById(String taskId) {
-    String sql = "SELECT t.id as task_id, t.title,t.description,t.created_at, u.username, u.email FROM tasks t JOIN users u ON t.owner_id = u.id WHERE t.id = ?";
+    String sql = "SELECT t.id as task_id, t.title,t.description,t.created_at, u.username, u.email, t.owner_id FROM tasks t JOIN users u ON t.owner_id = u.id WHERE t.id = ?";
     return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
         TaskDetails dto = new TaskDetails();
         dto.setTaskId(rs.getString("task_id"));
@@ -35,6 +35,7 @@ public class TaskRepository {
         dto.setCreatedAt(rs.getString("created_at"));
         dto.setUsername(rs.getString("username"));
         dto.setEmail(rs.getString("email"));
+        dto.setOwnerId(rs.getString("owner_id"));
         return dto;
     }, taskId);
 }
@@ -46,9 +47,19 @@ public class TaskRepository {
     }
 
     // READ: List all tasks
-    public List<Task> findAll() {
-        String sql = "SELECT * FROM tasks";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Task.class));
+    public List<TaskDetails> findAll() {
+        String sql = "SELECT t.id, t.title, t.description, t.created_at, u.username, u.email " +
+                    "FROM tasks t JOIN users u ON t.owner_id = u.id";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            TaskDetails dto = new TaskDetails();
+            dto.setTaskId(rs.getString("id"));
+            dto.setTitle(rs.getString("title"));
+            dto.setDescription(rs.getString("description"));
+            dto.setCreatedAt(rs.getString("created_at"));
+            dto.setUsername(rs.getString("username"));
+            dto.setEmail(rs.getString("email"));
+            return dto;
+        });
     }
 
     // UPDATE: Update a task (title, desc, updated time)

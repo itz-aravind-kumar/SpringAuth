@@ -7,7 +7,14 @@ public class TaskDetails {
     private String createdAt;
     private String username;
     private String email;
+    private String ownerId;
     // Getters and Setters
+    public String getOwnerId() {
+        return ownerId;
+    }
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
     public String getTaskId() {
         return taskId;
     }

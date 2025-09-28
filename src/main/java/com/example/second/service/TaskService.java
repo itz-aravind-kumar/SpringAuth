@@ -31,7 +31,7 @@ public class TaskService {
     }
 
     // List all tasks (admin)
-    public List<Task> getAllTasks() {
+    public List<TaskDetails> getAllTasks() {
         return taskRepository.findAll();
     }
 
