@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.second.dto.TaskDetails;
 import com.example.second.model.Task;
 import com.example.second.repository.TaskRepository;
 
@@ -20,7 +21,7 @@ public class TaskService {
     }
 
     // Find task by ID (for owner or admin)
-    public Task getTaskById(String id) {
+    public TaskDetails getTaskById(String id) {
         return taskRepository.findById(id);
     }
 

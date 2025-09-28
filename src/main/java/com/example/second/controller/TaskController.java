@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import com.example.second.dto.TaskDetails;
 import com.example.second.model.User;
 import com.example.second.model.Task;
 import com.example.second.service.TaskService;
@@ -38,6 +40,16 @@ public class TaskController {
         taskService.createTask(task);
         return ResponseEntity.ok("Task created");
     }
+    
+    // Get single task
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTask(@PathVariable String id) {
+        TaskDetails dto=taskService.getTaskById(id);
+        if(dto==null){
+            return ResponseEntity.status(404).body("Task not found");
+        }
+        return ResponseEntity.ok(dto);
+    }
 
     // List tasks for owner
     @GetMapping("/owner/{ownerId}")
@@ -51,11 +63,7 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getAllTasks());
     }
 
-    // Get single task
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getTask(@PathVariable String id) {
-        return ResponseEntity.ok(taskService.getTaskById(id));
-    }
+    
 
     // Update
     @PutMapping("/{id}")

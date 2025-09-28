@@ -22,7 +22,7 @@ public class JwtService {
     public void init() {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
-
+    
     public String generateToken(String subject, Map<String, Object> claims) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + EXPIRATION_MS);
