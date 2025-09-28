@@ -1,18 +1,15 @@
 package com.example.second.repository;
-
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
 import com.example.second.model.User;
 
 @Repository
 public class UserRepository {
-
+    
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -44,9 +41,14 @@ public class UserRepository {
     }
 
     // UPDATE: Change password or role
-    public int update(User user) {
-        String sql = "UPDATE users SET password = ?, role = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, user.getPassword(), user.getRole(), user.getId());
+    public int update(String id,User user) {
+        System.out.println("Attempting to update user with ID: " + id);
+        System.out.println("Email: " + user.getEmail());
+        System.out.println("Username: " + user.getUsername());
+        // System.out.println("Password: " + user.getPassword());
+
+        String sql = "UPDATE users SET email=?, password = ?, username=? WHERE id = ?";
+        return jdbcTemplate.update(sql, user.getEmail(),user.getPassword(), user.getUsername(), id);
     }
 
     // DELETE: Remove a user

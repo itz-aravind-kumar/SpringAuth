@@ -1,6 +1,5 @@
 package com.example.second.controller;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,11 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.second.model.User;
 import com.example.second.security.JwtService;
 import com.example.second.service.UserService;
-import com.example.second.dto.*;;
+import com.example.second.dto.*;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -25,8 +24,6 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    
 
     // Registration endpoint (example; you can also put under /api/users)
     @PostMapping("/register")
@@ -51,22 +48,24 @@ public class AuthController {
             // If the stored password exactly equals the raw password, encode & update it, then continue.
             if (authRequest.getPassword().equals(user.getPassword())) {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
-                userService.updateUser(user); // persist migrated password
+                userService.updateUser(user.getId(),user); // persist migrated password
             } else {
                 System.out.println(user.getEmail());
                 return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
             }
         }
-        // Add claims: you can add userId, role, etc. for later extraction
+        // Prepare claims (role and email are optional extras)
         Map<String, Object> claims = Map.of(
             "role", user.getRole(),
-            "userId", user.getId()
+            "email", user.getEmail()
         );
-        String token = jwtService.generateToken(user.getEmail(), claims);
+        // Issue JWT with userId as subject (sub)
+        String token = jwtService.generateToken(user.getId(), claims);
         return ResponseEntity.ok(Map.of(
             "token", token,
             "userId", user.getId(),
-            "role", user.getRole()
+            "role", user.getRole(),
+            "email", user.getEmail()
         ));
     }
 

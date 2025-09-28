@@ -2,7 +2,6 @@ package com.example.second.repository;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -20,11 +19,9 @@ public class TaskRepository {
     // CREATE: Add new task with UUID
     public int save(Task task) {
         String sql = "INSERT INTO tasks (id, title, description, owner_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)";
-        String uuid = UUID.randomUUID().toString();
-        task.setId(uuid);
         Timestamp now = new Timestamp(System.currentTimeMillis());
         return jdbcTemplate.update(sql,
-            uuid, task.getTitle(), task.getDescription(), task.getOwnerId(), now, now);
+            task.getId(), task.getTitle(), task.getDescription(), task.getOwnerId(), now, now);
     }
 
     // READ: Get by task ID

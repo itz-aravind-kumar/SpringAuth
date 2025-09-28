@@ -1,6 +1,6 @@
 package com.example.second.model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public class Task {
     private String id;
@@ -47,5 +47,5 @@ public class Task {
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
-    
+
 }

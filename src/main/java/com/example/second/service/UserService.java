@@ -39,11 +39,27 @@ public class UserService {
     }
 
     // Change user role/password
-    public int updateUser(User user) {
-        if (!user.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public int updateUser(String id, User incoming) {
+        // 1. Get existing user from DB
+        User existing = getUserById(id);
+        if (existing == null) throw new RuntimeException("User not found");
+
+        // 2. Update fields only if not null (partial update/patch style)
+        if (incoming.getEmail() != null && !incoming.getEmail().isEmpty()) {
+            existing.setEmail(incoming.getEmail());
         }
-        return userRepository.update(user);
+        if (incoming.getUsername() != null && !incoming.getUsername().isEmpty()) {
+            existing.setUsername(incoming.getUsername());
+        }
+        if (incoming.getRole() != null && !incoming.getRole().isEmpty()) {
+            existing.setRole(incoming.getRole());
+        }
+        if (incoming.getPassword() != null && !incoming.getPassword().isEmpty()) {
+            existing.setPassword(passwordEncoder.encode(incoming.getPassword()));
+        }
+
+        // 3. Call repository to persist changes
+        return userRepository.update(id, existing);
     }
 
     // Delete user
@@ -63,6 +79,7 @@ public class UserService {
             return false;
         }
     }
+    
 
     
 }
