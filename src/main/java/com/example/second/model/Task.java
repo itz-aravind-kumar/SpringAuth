@@ -2,9 +2,12 @@ package com.example.second.model;
 
 import java.sql.Timestamp;
 
+
 public class Task {
     private String id;
+    
     private String title;
+
     private String description;
     private String ownerId;
     private Timestamp createdAt;

@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.second.dto.TaskDetails;
+import com.example.second.dto.TaskRequest;
 import com.example.second.model.User;
 import com.example.second.model.Task;
 import com.example.second.service.TaskService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -41,7 +43,10 @@ public class TaskController {
 
     // Create task
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody Task task) {
+    public ResponseEntity<?> create(@Valid @RequestBody TaskRequest taskRequest) {
+        Task task=new Task();
+        task.setTitle(taskRequest.getTitle());
+        task.setDescription(taskRequest.getDescription());
         task.setId(UUID.randomUUID().toString());
         task.setOwnerId(getUserId());
         taskService.createTask(task);
@@ -98,7 +103,7 @@ public class TaskController {
 
     // Update
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTask(@PathVariable String id, @RequestBody Task task) {
+    public ResponseEntity<?> updateTask(@Valid @PathVariable String id, @Valid @RequestBody TaskRequest taskRequest) {
         TaskDetails existingTask=taskService.getTaskById(id);
         if(existingTask==null){ 
             return ResponseEntity.status(404).body("Task not found");
@@ -106,6 +111,9 @@ public class TaskController {
         if(!isAdmin() && !existingTask.getOwnerId().equals(getUserId())){
             return ResponseEntity.status(403).body("You can update only your own tasks");
         }
+        Task task=new Task();
+        task.setTitle(taskRequest.getTitle());
+        task.setDescription(taskRequest.getDescription());
         task.setId(id);
         task.setOwnerId(existingTask.getOwnerId()); // preserve owner
         taskService.updateTask(task);

@@ -74,4 +74,10 @@ public class TaskRepository {
         String sql = "DELETE FROM tasks WHERE id = ?";
         return jdbcTemplate.update(sql, id);
     }
+
+    public boolean existsByTitleAndOwnerId(String title, String ownerId) {
+        String sql = "SELECT COUNT(*) FROM tasks WHERE title = ? AND owner_id = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, title, ownerId);
+        return count != null && count > 0;
+    }
 }
