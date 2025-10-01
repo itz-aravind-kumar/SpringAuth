@@ -31,6 +31,7 @@ public class AuthController {
     // Registration endpoint (example; you can also put under /api/users)
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody User user) {
+        System.out.println("helloo");
         // Only save if user doesn't exist
         if (userService.existsByEmail(user.getEmail())) {
             return ResponseEntity.badRequest().body(Map.of("error", "Email already registered"));
