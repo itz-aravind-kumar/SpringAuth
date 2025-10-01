@@ -72,6 +72,7 @@ public class TaskRepository {
     // DELETE: Delete a task
     public int deleteById(String id) {
         String sql = "DELETE FROM tasks WHERE id = ?";
+        System.out.println("hi");
         return jdbcTemplate.update(sql, id);
     }
 
