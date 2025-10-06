@@ -1,10 +1,14 @@
 package com.example.second.model;
 
+import com.example.second.validation.constraint.PasswordNoUsername;
 import com.example.second.validation.constraint.ValidName;
+import com.example.second.validation.constraint.ValidPassword;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
+@PasswordNoUsername
 public class User {
     private String id;
 
@@ -14,8 +18,10 @@ public class User {
 
     @NotBlank
     @Email
+    @NotEmpty
     private String email;
 
+    @ValidPassword(min = 8, requireUppercase = true, requireLowercase = true, requireDigit = true, requireSpecial = true)
     private String password;
     private String role;
 
