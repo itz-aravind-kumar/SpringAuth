@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.validation.Valid;
 
 import com.example.second.dto.LoginRequest;
 import com.example.second.model.User;
 import com.example.second.security.JwtService;
 import com.example.second.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,7 +32,6 @@ public class AuthController {
     // Registration endpoint (example; you can also put under /api/users)
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody User user) {
-        System.out.println("helloo");
         // Only save if user doesn't exist
         if (userService.existsByEmail(user.getEmail())) {
             return ResponseEntity.badRequest().body(Map.of("error", "Email already registered"));
